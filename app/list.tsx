@@ -1,17 +1,25 @@
 import Greetings from "@/components/Greetings";
 import ProductsList from "@/components/ProductsList";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 import products from '../assets/mocks/products'
+import { useProducts } from "@/hooks/UseProducts";
+import { useEffect } from "react";
 
 export default function ProductListingPage() {
     const user = 'Michael'
+    const { data, isLoading, isError } = useProducts();
+
+    useEffect(() => {
+        console.log('caca', data)
+    }, [data])
 
     return <View style={styles.container}>
         <Greetings
             header={`Hi Mr ${user}`}
             subheader={"Welcome Back!"}
             paragraph={""} />
-        <ProductsList data={products} />
+        <ProductsList data={isLoading || !data ? [] : data} />
+
     </View>
 }
 

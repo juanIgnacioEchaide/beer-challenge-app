@@ -1,6 +1,8 @@
 export type Sku = {
     code: string;
     name: string;
+    stock?: number;
+    price?: string;
 };
 
 export type Product = {
@@ -14,3 +16,8 @@ export type Product = {
     information: string;
     skus: Sku[];
 };
+
+export type ProductDetail = {
+    stock: number;
+    price: string;
+}
