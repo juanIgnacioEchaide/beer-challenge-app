@@ -2,7 +2,7 @@ import Greetings from "@/components/Greetings";
 import ProductsList from "@/components/ProductsList";
 import { View, StyleSheet } from "react-native";
 import products from '../assets/mocks/products'
-import { useProducts } from "@/hooks/UseProducts";
+import { useProducts } from "@/hooks/useProducts";
 import { useEffect } from "react";
 
 export default function ProductListingPage() {

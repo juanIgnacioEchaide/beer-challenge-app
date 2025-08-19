@@ -1,19 +1,21 @@
-import { StatusBar } from "expo-status-bar";
-import { Platform, StyleSheet, ActivityIndicator, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, ActivityIndicator, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Text, View } from "@/components/Themed";
-import { useLocalSearchParams } from "expo-router";
-import { useProducts } from "@/hooks/UseProducts";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useProducts } from "@/hooks/useProducts";
 import { useState } from "react";
-import { Product, Sku } from "@/models/product";
+import { Sku } from "@/models/product";
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isLoading, isError } = useProducts();
   const [selectedSku, setSelectedSku] = useState<number>(0);
+  const router = useRouter()
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <View style={styles.centered}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -21,7 +23,7 @@ export default function ProductDetailScreen() {
 
   if (isError || !data) {
     return (
-      <View style={styles.container}>
+      <View style={styles.centered}>
         <Text>Error cargando producto</Text>
       </View>
     );
@@ -31,68 +33,200 @@ export default function ProductDetailScreen() {
 
   if (!product) {
     return (
-      <View style={styles.container}>
+      <View style={styles.centered}>
         <Text>Producto no encontrado</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.paragraph}>
-        <View style={styles.topBar}>
-          <Text style={styles.title}>{product.brand}</Text>
-          <Text>Origin: {product.origin} | Stock: {product.skus[selectedSku].stock}</Text>
-        </View>
-        <View style={styles.paragraph}>
-          <Text>${product.skus[selectedSku].price}</Text>
-        </View>
-      </View>
+    <>
+      <Stack.Screen
+        options={{
+          headerTransparent: true,
+          headerTitle: "Detail",
+          headerTitleAlign: "center",
+          headerLeft: ({ tintColor }) => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Text><Ionicons name="arrow-back" size={24} color={tintColor ?? "black"} /></Text>
+            </TouchableOpacity>
+          ),
+          headerRight: ({ tintColor }) => (
+            <TouchableOpacity onPress={() => console.log("3 puntos presionado")}>
+              <Text><Ionicons name="ellipsis-horizontal" size={24} color={tintColor ?? "black"} /></Text>
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
+        {/* Imagen grande */}
+        {product.image && (
+          <Image source={{ uri: product.image }} style={styles.image} resizeMode="contain" />
+        )}
 
-      <View>
-        <Text>Description</Text>
-        <Text>{product.information}</Text>
-      </View>
-      <View>
-        <Text>Size</Text>
-        <View style={styles.paragraph}>
-          {product.skus.map((sku: Sku) =>
-            <TouchableOpacity><Text>{sku.name}</Text></TouchableOpacity>)}
+        {/* Card blanca con info */}
+        <View style={styles.card}>
+          <View style={styles.headerRow}>
+            <Text style={styles.productName}>{product.brand}</Text>
+            <Text style={styles.price}>${product.skus[selectedSku].price}</Text>
+          </View>
+          <Text style={styles.meta}>
+            Origin: {product.origin} | Stock: {product.skus[selectedSku].stock}
+          </Text>
+
+          {/* Descripción */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Description</Text>
+            <Text style={styles.description}>{product.information}</Text>
+          </View>
+
+          {/* Tamaños */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Size</Text>
+            <View style={styles.skuRow}>
+              {product.skus.map((sku: Sku, index: number) => (
+                <TouchableOpacity
+                  key={sku.name}
+                  style={[
+                    styles.skuButton,
+                    selectedSku === index && styles.skuSelected
+                  ]}
+                  onPress={() => setSelectedSku(index)}
+                >
+                  <Text style={selectedSku === index ? styles.skuTextSelected : styles.skuText}>
+                    {sku.name.split('z')[0]}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Botones */}
+          <View style={styles.actions}>
+            <TouchableOpacity style={styles.bagButton}>
+              <Text style={styles.bagText}>👜</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cartButton}>
+              <Text style={styles.cartText}>Add to cart</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      <View style={styles.paragraph}>
-        <TouchableOpacity><Text>bolso</Text></TouchableOpacity>
-        <TouchableOpacity><Text>Add to cart</Text></TouchableOpacity>
-      </View>
-    </View>
+      </ScrollView></>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    flex: 1,
+    backgroundColor: "#fafafa",
+  },
+  centered: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
-    padding: 16,
+    justifyContent: "center",
   },
-  topBar: {
-    display: 'flex',
-    width: 300,
-    flexDirection: 'column',
+  image: {
+    width: 220,
+    height: 220,
+    marginTop: 20,
+  },
+  card: {
+    flex: 1,
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    marginTop: -20,
+    padding: 20,
+    width: "100%",
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "space-around",
   },
-  title: {
-    fontSize: 22,
+  productName: {
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 12,
   },
-  paragraph: {
-    display: 'flex',
-    flexDirection: 'row',
+  price: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#f7931e", // naranja
+  },
+  meta: {
+    fontSize: 14,
+    color: "#888",
+    marginTop: 4,
+    marginBottom: 16,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 6,
+  },
+  description: {
+    fontSize: 14,
+    color: "#555",
+    lineHeight: 20,
+  },
+  skuRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  skuButton: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 20,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    marginRight: 8,
+  },
+  skuSelected: {
+    backgroundColor: "#f7931e",
+    borderColor: "#f7931e",
+  },
+  skuText: {
+    fontSize: 14,
+    color: "#333",
+  },
+  skuTextSelected: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  actions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 20,
   },
-
+  bagButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 12,
+    backgroundColor: "#f2f2f2",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+  bagText: {
+    fontSize: 18,
+  },
+  cartButton: {
+    flex: 1,
+    height: 50,
+    borderRadius: 12,
+    backgroundColor: "#f7931e",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cartText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });

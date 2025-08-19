@@ -1,5 +1,5 @@
 import 'react-native-reanimated';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -7,7 +7,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts, DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from '@expo-google-fonts/dm-sans';
 import { useColorScheme } from '@/components/useColorScheme';
-import TopBar from '@/components/TopBar';
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from 'react-native';
 
 
 
@@ -55,9 +56,8 @@ function RootLayoutNav() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <TopBar />
         <Stack>
-          <Stack.Screen name="modal" options={{ presentation: 'card' }} />
+          <Stack.Screen name="detail" options={{ headerShown: false }} />
           <Stack.Screen name="list" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>

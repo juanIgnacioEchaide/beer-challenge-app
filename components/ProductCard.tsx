@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { PlusButton } from "./PlusButton";
 import { useRouter } from "expo-router";
-import { useProducts } from "@/hooks/UseProducts";
+import { useProducts } from "@/hooks/useProducts";
 
 type ProductCardProps = {
     id: number;
