@@ -15,7 +15,7 @@ export default function ProductsList({ data }: ProductsListProps) {
                 data={data}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item, index }) => (
-                    <ProductCard product={item} index={index} />
+                    <ProductCard id={item.id} index={index} />
                 )}
                 numColumns={2}
                 columnWrapperStyle={styles.row}

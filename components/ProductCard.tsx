@@ -1,30 +1,41 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import { Product } from "@/models/product";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { PlusButton } from "./PlusButton";
+import { useRouter } from "expo-router";
+import { useProducts } from "@/hooks/UseProducts";
 
 type ProductCardProps = {
-    product: Product;
+    id: number;
     index: number;
 };
 
-export function ProductCard({ product, index }: ProductCardProps) {
+export function ProductCard({ id, index }: ProductCardProps) {
     const isLeft = index % 2 === 0;
+    const { data } = useProducts();
+    const product = data?.find((p) => p.id === Number(id));
+    const router = useRouter()
+
+    if (!product) return null;
 
     return (
-        <View style={[
-            styles.card,
-            isLeft ? styles.leftCard : styles.rightCard
-        ]}>
-            <Text style={styles.name}>{product.brand}</Text>
+        <TouchableOpacity
+            onPress={() => {
+                router.push(`/detail/${id}`)
+            }}>
+            <View style={[
+                styles.card,
+                isLeft ? styles.leftCard : styles.rightCard
+            ]}>
+                <Text style={styles.name}>{product.brand}</Text>
 
-            {product.image && (
-                <Image source={{ uri: product.image }} style={styles.image} resizeMode="contain" />
-            )}
-            <Text style={styles.price}>$1000</Text>
-            <View style={styles.buttonContainer}>
-                <PlusButton onPress={() => console.log(product.id)} />
+                {product.image && (
+                    <Image source={{ uri: product.image }} style={styles.image} resizeMode="contain" />
+                )}
+                <Text style={styles.price}>${product.skus[0].price}</Text>
+                <View style={styles.buttonContainer}>
+                    <PlusButton onPress={() => console.log(JSON.stringify(product))} />
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

@@ -57,8 +57,8 @@ function RootLayoutNav() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <TopBar />
         <Stack>
+          <Stack.Screen name="modal" options={{ presentation: 'card' }} />
           <Stack.Screen name="list" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
         </Stack>
       </ThemeProvider>
     </QueryClientProvider>

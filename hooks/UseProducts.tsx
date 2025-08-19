@@ -1,4 +1,5 @@
 import { getAllProducts, getProductDetails } from "@/app/api";
+import { Product } from "@/models/product";
 import { useQuery } from "@tanstack/react-query";
 
 export const useProducts = () => {
@@ -6,8 +7,7 @@ export const useProducts = () => {
         queryKey: ["products"],
         queryFn: async () => {
             const products = await getAllProducts();
-            console.log("products from API", products);
-
+            //  console.log("products from API", products);
             const enrichedProducts = await Promise.all(
                 products.map(async (product: any) => {
                     const enrichedSkus = await Promise.all(
@@ -18,12 +18,12 @@ export const useProducts = () => {
                     );
 
                     const enrichedProduct = { ...product, skus: enrichedSkus };
-                    console.log("enrichedProduct", enrichedProduct);
+                    console.log("enrichedProduct");
                     return enrichedProduct;
                 })
             );
 
-            console.log("enrichedProducts", enrichedProducts);
+            // console.log("enrichedProducts", enrichedProducts);
             return enrichedProducts;
         },
     });
