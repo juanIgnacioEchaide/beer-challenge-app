@@ -4,6 +4,7 @@ import { View, StyleSheet } from "react-native";
 import products from '../assets/mocks/products'
 import { useProducts } from "@/hooks/useProducts";
 import { useEffect } from "react";
+import React from "react";
 
 export default function ProductListingPage() {
     const user = 'Michael'

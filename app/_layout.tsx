@@ -1,16 +1,13 @@
 import 'react-native-reanimated';
 import React, { useEffect } from 'react';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts, DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from '@expo-google-fonts/dm-sans';
-import { useColorScheme } from '@/components/useColorScheme';
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from 'react-native';
-
-
+import { useColorScheme } from 'react-native';
+import TopBar from '@/components/TopBar';
 
 const queryClient = new QueryClient();
 
@@ -52,10 +49,12 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const pathname = usePathname();
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        {pathname === '/list' && <TopBar />}
         <Stack>
           <Stack.Screen name="detail" options={{ headerShown: false }} />
           <Stack.Screen name="list" options={{ headerShown: false }} />

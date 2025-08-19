@@ -2,7 +2,7 @@ export default [
     {
         id: 127,
         brand: "Modelo Especial",
-        image: "images/modelo-especial.jpeg",
+        image: "ModeloEspecial",
         style: "Lager",
         substyle: "Light Lager",
         abv: "4.4%",
@@ -18,7 +18,7 @@ export default [
     {
         id: 374,
         brand: "Miller Lite",
-        image: "images/miller-lite.png",
+        image: "MillerLite",
         style: "Lager",
         substyle: "Light Lager",
         abv: "4.17%",
@@ -33,7 +33,7 @@ export default [
     {
         id: 743,
         brand: "Corona Premier",
-        image: "images/corona.jpg",
+        image: "Corona",
         style: "Lager",
         substyle: "Mexican Lager",
         abv: "4.0%",
@@ -48,21 +48,19 @@ export default [
     {
         id: 841,
         brand: "Budweiser",
-        image: "images/budweiser.jpg",
+        image: "Budweiser",
         style: "Lager",
         substyle: "American Lager",
         abv: "5%",
         origin: "Missouri, USA",
         information:
             "Budweiser es una lager americana de cuerpo medio, sabor balanceado y refrescante, elaborada con cebada seleccionada y lúpulos premium.",
-        skus: [
-            { code: "15337", name: "24 - 12oz Bottles, 12 Pack" },
-        ],
+        skus: [{ code: "15337", name: "24 - 12oz Bottles, 12 Pack" }],
     },
     {
         id: 902,
         brand: "Heineken",
-        image: "images/heineken.jpg",
+        image: "Beer",
         style: "Lager",
         substyle: "Pale Lager",
         abv: "5%",
@@ -77,7 +75,7 @@ export default [
     {
         id: 903,
         brand: "Guinness Draught",
-        image: "images/guinness.jpg",
+        image: "WineGlass",
         style: "Stout",
         substyle: "Irish Stout",
         abv: "4.2%",

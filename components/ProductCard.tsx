@@ -1,7 +1,10 @@
+import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { PlusButton } from "./PlusButton";
 import { useRouter } from "expo-router";
 import { useProducts } from "@/hooks/useProducts";
+import { IconName, Icons } from "@/assets/images/icons";
+
 
 type ProductCardProps = {
     id: number;
@@ -28,7 +31,8 @@ export function ProductCard({ id, index }: ProductCardProps) {
                 <Text style={styles.name}>{product.brand}</Text>
 
                 {product.image && (
-                    <Image source={{ uri: product.image }} style={styles.image} resizeMode="contain" />
+                    <Image source={Icons[product.image as IconName]} style={styles.image} resizeMode="contain" />
+
                 )}
                 <Text style={styles.price}>${product.skus[0].price}</Text>
                 <View style={styles.buttonContainer}>
@@ -74,9 +78,10 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     price: {
-        fontSize: 14,
+        fontSize: 20,
         fontWeight: "bold",
-        marginBottom: 8,
+        marginBottom: 12,
+        right: 15,
     },
     buttonContainer: {
         position: "absolute",

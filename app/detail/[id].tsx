@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Sku } from "@/models/product";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { IconName, Icons } from "@/assets/images/icons";
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -48,12 +49,12 @@ export default function ProductDetailScreen() {
           headerTitleAlign: "center",
           headerLeft: ({ tintColor }) => (
             <TouchableOpacity onPress={() => router.back()}>
-              <Text><Ionicons name="arrow-back" size={24} color={tintColor ?? "black"} /></Text>
+              <Text><Ionicons name="arrow-back" style={styles.barButton} size={24} color={tintColor ?? "black"} /></Text>
             </TouchableOpacity>
           ),
           headerRight: ({ tintColor }) => (
-            <TouchableOpacity onPress={() => console.log("3 puntos presionado")}>
-              <Text><Ionicons name="ellipsis-horizontal" size={24} color={tintColor ?? "black"} /></Text>
+            <TouchableOpacity onPress={() => window.alert('click on ellipsis')}>
+              <Text><Ionicons name="ellipsis-horizontal" style={styles.barButton} size={24} color={tintColor ?? "black"} /></Text>
             </TouchableOpacity>
           ),
         }}
@@ -61,14 +62,14 @@ export default function ProductDetailScreen() {
       <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
         {/* Imagen grande */}
         {product.image && (
-          <Image source={{ uri: product.image }} style={styles.image} resizeMode="contain" />
+          <Image source={Icons[product.image as IconName]} style={styles.image} resizeMode="contain" />
         )}
 
         {/* Card blanca con info */}
         <View style={styles.card}>
           <View style={styles.headerRow}>
             <Text style={styles.productName}>{product.brand}</Text>
-            <Text style={styles.price}>${product.skus[selectedSku].price}</Text>
+            <Text style={styles.price}>${product.skus[selectedSku].price / 100}</Text>
           </View>
           <Text style={styles.meta}>
             Origin: {product.origin} | Stock: {product.skus[selectedSku].stock}
@@ -103,15 +104,16 @@ export default function ProductDetailScreen() {
 
           {/* Botones */}
           <View style={styles.actions}>
-            <TouchableOpacity style={styles.bagButton}>
-              <Text style={styles.bagText}>👜</Text>
+            <TouchableOpacity style={styles.bagButton} onPress={() => window.alert("click on navigate o cart")}>
+              <Image source={require('@/assets/images/icons/icon-bag.png')} style={{ width: 24, height: 24 }} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cartButton}>
+            <TouchableOpacity style={styles.cartButton} onPress={() => window.alert("click on add to cart")}>
               <Text style={styles.cartText}>Add to cart</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView></>
+      </ScrollView>
+    </>
   );
 }
 
@@ -120,6 +122,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fafafa",
   },
+  barButton: {
+    backgroundColor: "#ffffffff",
+    borderRadius: 30,
+    color: 'black'
+  },
   centered: {
     flex: 1,
     alignItems: "center",
@@ -127,7 +134,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 220,
-    height: 220,
+    height: 423,
     marginTop: 20,
   },
   card: {
@@ -137,6 +144,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     marginTop: -20,
     padding: 20,
+    height: 490,
     width: "100%",
   },
   headerRow: {
@@ -208,7 +216,9 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 12,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "transparent",
+    borderWidth: 2,
+    borderColor: "#f7931e",
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
