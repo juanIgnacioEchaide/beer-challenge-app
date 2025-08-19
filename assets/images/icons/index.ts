@@ -1,4 +1,5 @@
 export const Icons = {
+    Profile: require("@/assets/images/icons/profile.jpg"),
     Beer: require("@/assets/images/icons/Beer.png"),
     Budweiser: require("@/assets/images/icons/budweiser.png"),
     Corona: require("@/assets/images/icons/corona.png"),
