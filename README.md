@@ -30,6 +30,7 @@ yarn install
 npm run start
 # or
 yarn start
+```
 
 ## State management & API calling
 The current example was developed using react-query
