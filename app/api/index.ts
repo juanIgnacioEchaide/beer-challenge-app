@@ -5,7 +5,6 @@ import axios from "axios";
 const api = axios.create({
     baseURL: "https://localhost:3000/api",
 });
-
 export async function getAllProducts() {
     try {
         const { data } = await api.get("/products");
